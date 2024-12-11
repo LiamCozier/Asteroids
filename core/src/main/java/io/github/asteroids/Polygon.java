@@ -27,6 +27,20 @@ public class Polygon {
         this.vertices[vertex_position*2+1] = y;
     }
 
+    public Polygon get_shifted(float x_shift, float y_shift) {
+        float[] new_vertices = new float[this.vertices.length];
+
+        for (int index=0; index<this.vertices.length; index++) {
+            if (!(index%2==0)) {
+                new_vertices[index] = this.vertices[index]+x_shift;
+            } else {
+                new_vertices[index] = this.vertices[index]+y_shift;
+            }
+        }
+
+        return new Polygon(new_vertices);
+    }
+
     public Polygon get_rotated(float angle) {
         float[] rotated_vertices = new float[this.vertices.length];
 

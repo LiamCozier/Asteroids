@@ -13,23 +13,27 @@ import com.badlogic.gdx.utils.ScreenUtils;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     ShapeRenderer sr;
-    float a = 0;
-    Polygon p = Ship.BASE_SHAPE;
+    Ship s;
+    float[] mouse_position;
 
     @Override
     public void create() {
         sr = new ShapeRenderer();
+        s = new Ship();
     }
 
     @Override
     public void render() {
-        a++;
+
+        s.take_input();
+        s.set_direction(s.angle_to(Gdx.input.getX(), Gdx.input.getY()));
+
+        s.move();
 
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.polygon(p.get_rotated(a));
+        s.draw(sr);
         sr.end();
-
     }
 
     @Override

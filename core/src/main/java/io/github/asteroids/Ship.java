@@ -1,9 +1,11 @@
 package io.github.asteroids;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Ship {
-    static final Polygon BASE_SHAPE = new Polygon(new float[]{0, 10, 10, -10, 0, -5, -10, -10});
+    static final Polygon BASE_SHAPE = new Polygon(new float[]{0, 24, 15, -12, 0, 0, -15, -12});
 
     private float[] position;
     private float[] velocity;
@@ -46,11 +48,51 @@ public class Ship {
 
     public void set_direction(float direction) {
         this.direction = direction;
-        this.shape = BASE_SHAPE.get_rotated(direction);
     }
 
-    public void draw() {
-        return;
+    public float angle_to(float x, float y) {
+        x -= position[0];
+        y -= position[1];
+
+        float angle = (float) (Math.atan(-y/x) * (180/Math.PI) - 90);
+        angle *= -1;
+
+        if (x<0) {angle += 180;} // account for acute vs obtuse angles
+        return angle;
+    }
+
+    public void move() {
+        for (int i=0; i<2; i++) {
+            this.velocity[i] = Math.clamp(this.velocity[i], -10, 10);
+            this.position[i] += this.velocity[i];
+        }
+    }
+
+    public void draw(ShapeRenderer sr) {
+        Polygon draw_poly = BASE_SHAPE;
+
+        draw_poly = draw_poly.get_rotated(-this.direction); // rotate
+
+        draw_poly = draw_poly.get_shifted(this.position[0], this.position[1]); // translate
+
+
+
+        sr.polygon(draw_poly.get_vertices());
+    }
+
+    public void take_input() {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            this.velocity[0] += 1;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            this.velocity[0] += -1;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            this.velocity[1] += -1;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            this.velocity[1] += 1;
+        }
     }
 
 }
