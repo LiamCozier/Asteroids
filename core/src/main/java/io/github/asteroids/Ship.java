@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Ship {
     static final Polygon BASE_SHAPE = new Polygon(new float[]{0, 24, 15, -12, 0, 0, -15, -12});
+    static final float ACCELERATION = 2;
+    static final float FRICTION = 0.1f;
+    static final float MAX_SPEED = 5;
 
     private float[] position;
     private float[] velocity;
@@ -54,7 +57,7 @@ public class Ship {
         x -= position[0];
         y -= position[1];
 
-        float angle = (float) (Math.atan(-y/x) * (180/Math.PI) - 90);
+        float angle = (float) (Math.atan(-y/x) * (180/Math.PI));
         angle *= -1;
 
         if (x<0) {angle += 180;} // account for acute vs obtuse angles
@@ -63,8 +66,14 @@ public class Ship {
 
     public void move() {
         for (int i=0; i<2; i++) {
-            this.velocity[i] = Math.clamp(this.velocity[i], -10, 10);
+            this.velocity[i] = Math.clamp(this.velocity[i], -MAX_SPEED, MAX_SPEED); // not too fast!
             this.position[i] += this.velocity[i];
+
+            this.velocity[i] *= 1-FRICTION; // slow down please
+
+            if (Math.abs(this.velocity[i]) < 0.01) { // zero out arbitrarily low velocities
+                this.velocity[i] = 0;
+            }
         }
     }
 
@@ -82,16 +91,16 @@ public class Ship {
 
     public void take_input() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            this.velocity[0] += 1;
+            this.velocity[0] += ACCELERATION;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            this.velocity[0] += -1;
+            this.velocity[0] += -ACCELERATION;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            this.velocity[1] += -1;
+            this.velocity[1] += -ACCELERATION;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.velocity[1] += 1;
+            this.velocity[1] += ACCELERATION;
         }
     }
 

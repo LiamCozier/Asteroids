@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
     ShapeRenderer sr;
     Ship s;
-    float[] mouse_position;
+    float a = 0;
 
     @Override
     public void create() {
@@ -24,9 +24,11 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
+        a++;
 
         s.take_input();
         s.set_direction(s.angle_to(Gdx.input.getX(), Gdx.input.getY()));
+//      s.set_direction(a);
 
         s.move();
 
