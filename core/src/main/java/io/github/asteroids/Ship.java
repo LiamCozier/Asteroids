@@ -54,13 +54,14 @@ public class Ship {
     }
 
     public float angle_to(float x, float y) {
-        x -= position[0];
-        y -= position[1];
+        x -= this.position[0];
+        y -= this.position[1];
 
-        float angle = (float) (Math.atan(-y/x) * (180/Math.PI));
-        angle *= -1;
+        float angle = -(float) Math.atan2(y, x);
+        angle *= (float) (180 / Math.PI); // degrees not radians!
+        angle += 90;
 
-        if (x<0) {angle += 180;} // account for acute vs obtuse angles
+//        System.out.printf("%f %f %f %f\n", x, y, this.position[0], this.position[1]);
         return angle;
     }
 
@@ -91,16 +92,16 @@ public class Ship {
 
     public void take_input() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            this.velocity[0] += ACCELERATION;
+            this.velocity[1] += ACCELERATION;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            this.velocity[0] += -ACCELERATION;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.velocity[1] += -ACCELERATION;
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            this.velocity[0] += -ACCELERATION;
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.velocity[1] += ACCELERATION;
+            this.velocity[0] += ACCELERATION;
         }
     }
 

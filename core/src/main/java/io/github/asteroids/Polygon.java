@@ -32,9 +32,9 @@ public class Polygon {
 
         for (int index=0; index<this.vertices.length; index++) {
             if (!(index%2==0)) {
-                new_vertices[index] = this.vertices[index]+x_shift;
-            } else {
                 new_vertices[index] = this.vertices[index]+y_shift;
+            } else {
+                new_vertices[index] = this.vertices[index]+x_shift;
             }
         }
 

@@ -27,7 +27,7 @@ public class Main extends ApplicationAdapter {
         a++;
 
         s.take_input();
-        s.set_direction(s.angle_to(Gdx.input.getX(), Gdx.input.getY()));
+        s.set_direction(s.angle_to(Gdx.input.getX(), Gdx.graphics.getHeight()-Gdx.input.getY()));
 //      s.set_direction(a);
 
         s.move();
