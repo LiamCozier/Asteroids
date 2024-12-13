@@ -1,5 +1,10 @@
 package io.github.asteroids;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import java.util.Arrays;
+
 public class Polygon {
     private float[] offset;
     private float[] vertices;
@@ -113,7 +118,7 @@ public class Polygon {
     private boolean line_intersection(float[] vertices, float[] point) {
 
         float min_y = Math.min(vertices[1], vertices[3]);
-        float max_y = Math.min(vertices[1], vertices[3]);
+        float max_y = Math.max(vertices[1], vertices[3]);
 
         // check vertical bounds of line
         if (!(min_y < point[1] && point[1] < max_y)) {
@@ -127,8 +132,48 @@ public class Polygon {
     }
 
     private boolean contains_point(float[] point) {
-        for (int i=0; i<this.vertices.length-2; i+=2) {
+        int intersections = 0;
 
+        for (int i=0; i<vertices.length-2; i+=2) {
+            float[] line = {vertices[i], vertices[i+1], vertices[i+2], vertices[i+3]};
+            if (line_intersection(line, point)) {
+                intersections++;
+            }
+        }
+
+        // line from end to start
+        int len = vertices.length;
+        float[] line = {vertices[0], vertices[1], vertices[len-2], vertices[len-1]};
+        if (line_intersection(line, point)) {
+            intersections++;
+        }
+
+        return intersections%2==1;
+    }
+
+    public boolean intersects_with(Polygon poly) {
+        // if our bounding boxes even intersect
+        Rect bounding_box = get_bounding_box();
+        Rect poly_bounding_box = poly.get_bounding_box();
+        if (!(bounding_box.intersects_with(poly_bounding_box))) {
+            return false;
+        }
+
+        // if i contain any of their points
+        float[] other_vertices = poly.get_vertices();
+        for (int i=0; i<other_vertices.length/2; i++) {
+            float[] point = {other_vertices[2*i], other_vertices[2*i+1]};
+            if (contains_point(point)) {
+                return true;
+            }
+        }
+
+        // if they contain one of my points
+        for (int i=0; i<vertices.length/2; i++) {
+            float[] point = {vertices[2*i], vertices[2*i+1]};
+            if (poly.contains_point(point)) {
+                return true;
+            }
         }
         return false;
     }

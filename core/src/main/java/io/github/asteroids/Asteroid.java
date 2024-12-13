@@ -10,9 +10,9 @@ public class Asteroid {
     Polygon shape;
 
     Asteroid() {
-        shape = Polygon.regular_polygon(5, 50);
-        position = new float[]{75, 75};
-        velocity = new float[]{0, 1};
+        shape = Polygon.regular_polygon(7, 100);
+        position = new float[]{120, 540};
+        velocity = new float[]{0, 0};
         direction = 0;
     }
 
@@ -52,7 +52,7 @@ public class Asteroid {
     public void draw(ShapeRenderer sr) {
         Polygon draw_poly = get_shape();
 
-        sr.setColor(Color.WHITE);
+//        sr.setColor(Color.WHITE);
         sr.polygon(draw_poly.get_vertices());
     }
 
