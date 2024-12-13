@@ -8,6 +8,22 @@ public class Polygon {
         this.vertices = vertices;
     }
 
+    public static Polygon regular_polygon(int sides, float radius) {
+        if (sides<3) {return null;}
+
+        float[] vertices = new float[sides * 2];
+
+        for (int i=0; i<sides; i++) {
+
+            float x = (float) Math.cos(i * ((double) 360 / sides) * Math.PI/180);
+            float y = (float) Math.sin(i * ((double) 360 / sides) * Math.PI/180);
+
+            vertices[2*i] = x * radius;
+            vertices[2*i+1] = y * radius;
+        }
+        return new Polygon(vertices);
+    }
+
     public float[] get_vertices() {
         return this.vertices;
     }
@@ -61,4 +77,35 @@ public class Polygon {
 
         return new Polygon(rotated_vertices);
     }
+
+    public Rect get_bounding_box() {
+        float min_x = this.vertices[0];
+        float max_x = this.vertices[0];
+        float min_y = this.vertices[1];
+        float max_y = this.vertices[1];
+
+        // smallest and largest x and y
+        for (int i=0; i<this.vertices.length; i+=2) {
+            if (this.vertices[i]<min_x) {
+                min_x = this.vertices[i];
+            }
+            if (this.vertices[i]>max_x) {
+                max_x = this.vertices[i];
+            }
+        }
+
+        for (int i=1; i<this.vertices.length; i+=2) {
+            if (this.vertices[i]<min_x) {
+                min_y = this.vertices[i];
+            }
+            if (this.vertices[i]>max_x) {
+                max_y = this.vertices[i];
+            }
+        }
+
+        // convert min max vertices to rect
+
+        return null;
+    }
+
 }

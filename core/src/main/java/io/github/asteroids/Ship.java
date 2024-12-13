@@ -6,20 +6,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Ship {
     static final Polygon BASE_SHAPE = new Polygon(new float[]{0, 24, 15, -12, 0, 0, -15, -12});
-    static final float ACCELERATION = 2;
-    static final float FRICTION = 0.1f;
-    static final float MAX_SPEED = 5;
+    static final float ACCELERATION = 1.75f;
+    static final float FRICTION = 0.15f;
+    static final float MAX_SPEED = 4;
 
     private float[] position;
     private float[] velocity;
-    private Polygon shape;
     private float direction; // bearing from north
 
 
     Ship() {
         this.position = new float[]{(float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2};
         this.velocity = new float[]{0, 0};
-        this.shape = BASE_SHAPE;
         this.direction = 0;
     }
 
