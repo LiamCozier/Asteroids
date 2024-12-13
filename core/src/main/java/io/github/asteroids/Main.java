@@ -14,27 +14,32 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
     ShapeRenderer sr;
     Ship s;
-    float a = 0;
+    Asteroid a;
+    float angle = 0;
 
     @Override
     public void create() {
         sr = new ShapeRenderer();
         s = new Ship();
+        a = new Asteroid();
     }
 
     @Override
     public void render() {
-        a++;
+        angle++;
 
         s.take_input();
         s.set_direction(s.angle_to(Gdx.input.getX(), Gdx.graphics.getHeight()-Gdx.input.getY()));
-//      s.set_direction(a);
-
         s.move();
+
+        a.set_direction(angle);
+        a.move();
 
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         sr.begin(ShapeRenderer.ShapeType.Line);
         s.draw(sr);
+        a.draw(sr);
+        a.get_shape().get_bounding_box().draw(sr);
         sr.end();
     }
 

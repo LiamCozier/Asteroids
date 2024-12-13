@@ -104,8 +104,32 @@ public class Polygon {
         }
 
         // convert min max vertices to rect
+        float[] position = {min_x, min_y};
+        float[] dimensions = {max_x-min_x, max_y-min_y};
 
-        return null;
+        return new Rect(position, dimensions);
     }
 
+    private boolean line_intersection(float[] vertices, float[] point) {
+
+        float min_y = Math.min(vertices[1], vertices[3]);
+        float max_y = Math.min(vertices[1], vertices[3]);
+
+        // check vertical bounds of line
+        if (!(min_y < point[1] && point[1] < max_y)) {
+            return false;
+        }
+
+        float gradient = (vertices[1] - vertices[3]) / (vertices[0] - vertices[2]); // delta y / delta x
+        float x_threshold = ((point[1]-vertices[1]) / gradient) + vertices[0];
+
+        return point[0] < x_threshold;
+    }
+
+    private boolean contains_point(float[] point) {
+        for (int i=0; i<this.vertices.length-2; i+=2) {
+
+        }
+        return false;
+    }
 }

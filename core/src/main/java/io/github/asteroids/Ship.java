@@ -2,13 +2,14 @@ package io.github.asteroids;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Ship {
     static final Polygon BASE_SHAPE = new Polygon(new float[]{0, 24, 15, -12, 0, 0, -15, -12});
-    static final float ACCELERATION = 1.75f;
-    static final float FRICTION = 0.15f;
-    static final float MAX_SPEED = 4;
+    static final float ACCELERATION = 1.25f;
+    static final float DRAG = 0.05f;
+    static final float MAX_SPEED = 4.25f;
 
     private float[] position;
     private float[] velocity;
@@ -68,7 +69,7 @@ public class Ship {
             this.velocity[i] = Math.clamp(this.velocity[i], -MAX_SPEED, MAX_SPEED); // not too fast!
             this.position[i] += this.velocity[i];
 
-            this.velocity[i] *= 1-FRICTION; // slow down please
+            this.velocity[i] *= 1- DRAG; // slow down please
 
             if (Math.abs(this.velocity[i]) < 0.01) { // zero out arbitrarily low velocities
                 this.velocity[i] = 0;
@@ -76,15 +77,18 @@ public class Ship {
         }
     }
 
-    public void draw(ShapeRenderer sr) {
+    public Polygon get_shape() {
         Polygon draw_poly = BASE_SHAPE;
 
         draw_poly = draw_poly.get_rotated(-this.direction); // rotate
-
         draw_poly = draw_poly.get_shifted(this.position[0], this.position[1]); // translate
 
+        return draw_poly;
+    }
+    public void draw(ShapeRenderer sr) {
+        Polygon draw_poly = get_shape();
 
-
+        sr.setColor(Color.WHITE);
         sr.polygon(draw_poly.get_vertices());
     }
 
