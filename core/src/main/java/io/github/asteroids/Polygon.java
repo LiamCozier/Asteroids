@@ -95,10 +95,10 @@ public class Polygon {
         }
 
         for (int i=1; i<this.vertices.length; i+=2) {
-            if (this.vertices[i]<min_x) {
+            if (this.vertices[i]<min_y) {
                 min_y = this.vertices[i];
             }
-            if (this.vertices[i]>max_x) {
+            if (this.vertices[i]>max_y) {
                 max_y = this.vertices[i];
             }
         }
